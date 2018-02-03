@@ -1,0 +1,130 @@
+{
+  "project_info": {
+    "project_number": "801662993812",
+
+    "firebase_url": "https://ymeal-6dc20.firebaseio.com",
+    "project_id": "ymeal-6dc20",
+    "storage_bucket": "ymeal-6dc20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801662993812:android:1574b530d62f80d7",
+        "android_client_info": {
+          "package_name": "com.example.asnimansari.yesmeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801662993812-t3f8bn33ip494c52jnfoi5pl1ceg4ub4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "801662993812-5ek8evbd6ia85a9k7flothanq0ea1kjq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.asnimansari.yesmeal",
+            "certificate_hash": "4a128a34dbdbba7ef4fefd9c2131ef7e95f6e490"
+          }
+        },
+        {
+          "client_id": "801662993812-3s10schscdfjlvep7m1p286mrnpg9aq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnadoe8IRP6_-nxWyuftlK0UIWGKJ6PxI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801662993812-t3f8bn33ip494c52jnfoi5pl1ceg4ub4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801662993812:android:6f796f89b4c04d2a",
+        "android_client_info": {
+          "package_name": "com.yesmeal.ymadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801662993812-t3f8bn33ip494c52jnfoi5pl1ceg4ub4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "801662993812-3s10schscdfjlvep7m1p286mrnpg9aq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnadoe8IRP6_-nxWyuftlK0UIWGKJ6PxI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801662993812:android:68928ebb1dbe70f8",
+        "android_client_info": {
+          "package_name": "com.yesmeal.yesmealnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801662993812-t3f8bn33ip494c52jnfoi5pl1ceg4ub4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "801662993812-3s10schscdfjlvep7m1p286mrnpg9aq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnadoe8IRP6_-nxWyuftlK0UIWGKJ6PxI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
