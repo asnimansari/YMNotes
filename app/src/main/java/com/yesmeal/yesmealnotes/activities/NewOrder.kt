@@ -14,9 +14,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.yesmeal.yesmealnotes.R
+import com.yesmeal.yesmealnotes.fragments.NewShopOrder
+import com.yesmeal.yesmealnotes.fragments.NewYesMealOrder
 
 import kotlinx.android.synthetic.main.new_order.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.android.synthetic.main.fragment_new_shop_order.view.*
 
 class NewOrder : AppCompatActivity() {
 
@@ -82,45 +84,25 @@ class NewOrder : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
+            var chooseTabFragment:Fragment?=null
+
+            when(position){
+                0->chooseTabFragment= NewShopOrder()
+                1->chooseTabFragment= NewYesMealOrder()
+            }
+            return chooseTabFragment!!
+
+
         }
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 3
+            return 2
         }
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    class PlaceholderFragment : Fragment() {
 
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments.getInt(ARG_SECTION_NUMBER))
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
-            }
-        }
-    }
 }
