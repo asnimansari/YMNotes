@@ -8,17 +8,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import com.yesmeal.yesmealnotes.R
-import com.yesmeal.yesmealnotes.fragments.NewShopOrder
-import com.yesmeal.yesmealnotes.fragments.NewYesMealOrder
+import com.yesmeal.yesmealnotes.fragments.ShopOrder
+import com.yesmeal.yesmealnotes.fragments.YesMealOrder
 
 import kotlinx.android.synthetic.main.new_order.*
-import kotlinx.android.synthetic.main.fragment_new_shop_order.view.*
 
 class NewOrder : AppCompatActivity() {
 
@@ -87,8 +83,8 @@ class NewOrder : AppCompatActivity() {
             var chooseTabFragment:Fragment?=null
 
             when(position){
-                0->chooseTabFragment= NewShopOrder()
-                1->chooseTabFragment= NewYesMealOrder()
+                0->chooseTabFragment= ShopOrder()
+                1->chooseTabFragment= YesMealOrder()
             }
             return chooseTabFragment!!
 

@@ -44,13 +44,14 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_SERVICE_CHARGE to TEXT,
                 ORDER_SERVICE_CHARGE_PAID_LATER to INTEGER,
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER,
-                ORDER_UNIQUE_ID to TEXT + UNIQUE
+                ORDER_UNIQUE_ID to TEXT + UNIQUE,
+                ORDER_TYPE to TEXT
                 )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
     }
-    fun addNewOrder(shopName:String,orderLocation:String,orderLandmark:String?,orderMobile:String?,orderServiceCharge:String,orderServiceChargePaidLater:Int,orderServiceChargeCollectedFromShop:Int){
+    fun addNewOrder(shopName:String,orderLocation:String,orderLandmark:String?,orderMobile:String?,orderServiceCharge:String,orderServiceChargePaidLater:Int,orderServiceChargeCollectedFromShop:Int,orderType:String){
         var database  = this.writableDatabase
         var t = database.insert(TABLE_ORDERS,
                 ORDER_SHOP_NAME to shopName,
@@ -59,8 +60,10 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_MOBILE to orderMobile,
                 ORDER_SERVICE_CHARGE  to orderServiceCharge,
                 ORDER_SERVICE_CHARGE_PAID_LATER to orderServiceChargePaidLater,
+                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to orderServiceChargeCollectedFromShop,
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP,
-                ORDER_UNIQUE_ID to "YM"+Math.round(Math.random()*1000000).toString()
+                ORDER_UNIQUE_ID to "YM"+Math.round(Math.random()*1000000).toString(),
+                ORDER_TYPE to orderType
                 )
 
         Log.e("INSERTED",t.toString())

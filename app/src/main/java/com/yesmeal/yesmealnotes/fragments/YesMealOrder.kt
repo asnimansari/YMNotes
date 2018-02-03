@@ -25,7 +25,7 @@ import java.util.ArrayList
  */
 
 
-class NewYesMealOrder:Fragment(){
+class YesMealOrder :Fragment(){
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +51,8 @@ class NewYesMealOrder:Fragment(){
                 landmark.text.toString(),mobileNumber.text.toString(),
                 serviceCharge.text.toString(),
                 if(serviceChargePaidLater.isChecked) 1  else 0,
-                if(collectServiceChargeFromShop.isChecked) 1  else 0
+                if(collectServiceChargeFromShop.isChecked) 1  else 0,
+                "C"
         )
 
     }

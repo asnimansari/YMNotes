@@ -24,7 +24,7 @@ import java.util.ArrayList
  * Created by asnimansari on 03/02/18.
  */
 
-class  NewShopOrder:Fragment(){
+class ShopOrder :Fragment(){
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_new_shop_order,container,false)
     }
@@ -85,7 +85,8 @@ class  NewShopOrder:Fragment(){
                 null,null,
                 serviceCharge.text.toString(),
                 if(serviceChargePaidLater.isChecked) 1  else 0,
-                if(collectServiceChargeFromShop.isChecked) 1  else 0
+                if(collectServiceChargeFromShop.isChecked) 1  else 0,
+                "S"
                 )
 
     }
