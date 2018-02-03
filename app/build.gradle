@@ -36,5 +36,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'org.jetbrains.anko:anko-sqlite:0.10.4'
 
-
 }
