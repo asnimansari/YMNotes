@@ -43,11 +43,9 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_MOBILE to TEXT,
                 ORDER_SERVICE_CHARGE to TEXT,
                 ORDER_SERVICE_CHARGE_PAID_LATER to INTEGER,
-                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER
+                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER,
+                ORDER_UNIQUE_ID to TEXT + UNIQUE
                 )
-
-
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -61,8 +59,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_MOBILE to orderMobile,
                 ORDER_SERVICE_CHARGE  to orderServiceCharge,
                 ORDER_SERVICE_CHARGE_PAID_LATER to orderServiceChargePaidLater,
-                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP
-
+                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP,
+                ORDER_UNIQUE_ID to "YM"+Math.round(Math.random()*1000000).toString()
                 )
 
         Log.e("INSERTED",t.toString())
