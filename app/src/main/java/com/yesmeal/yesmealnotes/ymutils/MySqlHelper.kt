@@ -1,25 +1,12 @@
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import android.widget.Toast
+import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
 
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
-    var TABLE_ZONES  = "zones";
-    var TABLE_STAFF  =  "staffs";
-    var TABLE_SHOPS = "shops";
-    var TABLE_ORDERS = "orders"
 
-//    COMMIND
-    var ID = "_id"
-
-//    ZONE  TABLE
-    var ZONE_NAME = "zoneName"
-//    STAFF TABLE
-    var STAFF_NAME = "staffName";
-    var STAFF_EMAIL = "staffEmail"
-    var STAFF_PHONE = "staffMobile"
-//shop table
-    var SHOP_NAME  = "shopName"
     companion object {
         private var instance: MySqlHelper? = null
 
@@ -34,25 +21,51 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.createTable(TABLE_ZONES,true,
-                ID to INTEGER + PRIMARY_KEY,
+                ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 ZONE_NAME to TEXT)
 
         db.createTable(TABLE_STAFF,true,
-                ID to INTEGER + PRIMARY_KEY,
+                ID to INTEGER + PRIMARY_KEY +AUTOINCREMENT,
                 STAFF_NAME to TEXT + NOT_NULL,
                 STAFF_PHONE to TEXT + NOT_NULL,
                 STAFF_EMAIL to TEXT + NOT_NULL
                 )
 
         db.createTable(TABLE_SHOPS,true,
-                ID to INTEGER + PRIMARY_KEY,
+                ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 SHOP_NAME  to TEXT + NOT_NULL
         )
-        Log.e("DB","CREATED  ZONE  TABLE")
+        db.createTable(TABLE_ORDERS,true,
+                ID to INTEGER+ PRIMARY_KEY + AUTOINCREMENT,
+                ORDER_SHOP_NAME to TEXT,
+                ORDER_LOCATION to TEXT,
+                ORDER_LANDMARK to TEXT,
+                ORDER_MOBILE to TEXT,
+                ORDER_SERVICE_CHARGE to TEXT,
+                ORDER_SERVICE_CHARGE_PAID_LATER to INTEGER,
+                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER
+                )
+
+
 
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+    }
+    fun addNewOrder(shopName:String,orderLocation:String,orderLandmark:String?,orderMobile:String?,orderServiceCharge:String,orderServiceChargePaidLater:Int,orderServiceChargeCollectedFromShop:Int){
+        var database  = this.writableDatabase
+        var t = database.insert(TABLE_ORDERS,
+                ORDER_SHOP_NAME to shopName,
+                ORDER_LOCATION to  orderLocation,
+                ORDER_LANDMARK  to orderLandmark,
+                ORDER_MOBILE to orderMobile,
+                ORDER_SERVICE_CHARGE  to orderServiceCharge,
+                ORDER_SERVICE_CHARGE_PAID_LATER to orderServiceChargePaidLater,
+                ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP
+
+                )
+
+        Log.e("INSERTED",t.toString())
     }
 
 }

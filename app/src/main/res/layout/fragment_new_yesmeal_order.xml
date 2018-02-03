@@ -116,7 +116,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/serviceChargePaidLater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -126,17 +126,17 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutServiceCharge" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/collectServiceChargeFromShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Collect service charge from shop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/serviceChargePaidLater" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/saveOrder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -145,6 +145,6 @@
         android:text="Save Order"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintTop_toBottomOf="@+id/collectServiceChargeFromShop" />
 
 </android.support.constraint.ConstraintLayout>

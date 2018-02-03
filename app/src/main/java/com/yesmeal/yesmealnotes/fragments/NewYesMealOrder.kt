@@ -14,6 +14,8 @@ import com.yesmeal.yesmealnotes.R
 import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.ymutils.Constants
 import com.yesmeal.yesmealnotes.ymutils.CusUtils
+
+
 import kotlinx.android.synthetic.main.fragment_new_yesmeal_order.*
 
 import java.util.ArrayList
@@ -27,25 +29,31 @@ class NewYesMealOrder:Fragment(){
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shopsList  = ArrayList<String>()
+        initializeViewsAndAutoComplete()
 
-        var databaseReference = CusUtils.getDatabase().reference.child(Constants.SHOPS)
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(p0: DataSnapshot?) {
-                shopsList.clear()
-                for (each_shop  in p0!!.children){
-                    var shop: Shop? = each_shop.getValue(Shop::class.java)
-
-                    shopsList.add(shop?.shopname!!)
-                }
-                var shopAdapter = ArrayAdapter(context,android.R.layout.simple_list_item_1,shopsList)
-                shopName.setAdapter(shopAdapter)
+        saveOrder.setOnClickListener {
+            var areInputFieldValid =  validateAllInputFields()
+            if(areInputFieldValid){
+                saveShopToDB()
             }
-
-            override fun onCancelled(p0: DatabaseError?) {
-                Toast.makeText(context,"Error in Connecting to  Database", Toast.LENGTH_SHORT).show()
+            else{
+                Toast.makeText(context,"Please Enter All Fields",Toast.LENGTH_SHORT).show()
             }
-        })
+        }
+
+
+    }
+
+    private fun saveShopToDB() {
+        var database  = MySqlHelper.getInstance(context)
+        database.addNewOrder(shopName.text.toString(),
+                location.text.toString(),
+                landmark.text.toString(),mobileNumber.text.toString(),
+                serviceCharge.text.toString(),
+                if(serviceChargePaidLater.isChecked) 1  else 0,
+                if(collectServiceChargeFromShop.isChecked) 1  else 0
+        )
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,5 +66,28 @@ class NewYesMealOrder:Fragment(){
             fragmentManager.beginTransaction().detach(this).attach(this).commit()
         }
     }
+    private fun initializeViewsAndAutoComplete() {
+        val shopsList  = ArrayList<String>()
+        var databaseReference = CusUtils.getDatabase().reference.child(Constants.SHOPS)
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot?) {
+                shopsList.clear()
+                for (each_shop  in p0!!.children){
+                    var shop: Shop? = each_shop.getValue(Shop::class.java)
+
+                    shopsList.add(shop?.shopname!!)
+                }
+                var shopAdapter = ArrayAdapter(context,android.R.layout.simple_list_item_1,shopsList)
+                shopName.setAdapter(shopAdapter)
+            }
+            override fun onCancelled(p0: DatabaseError?) {
+                Toast.makeText(context,"Error in Connecting to  Database", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    private fun validateAllInputFields():Boolean {
+        return (shopName.text.toString().length!= 0) && (location.text.toString().length!=0)&& (serviceCharge.text.toString().length !=0) && (landmark.text.toString().length!=0) && (mobileNumber.text.toString().length !=0)
+    }
+
 
 }
