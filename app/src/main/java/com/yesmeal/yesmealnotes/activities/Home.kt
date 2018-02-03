@@ -35,7 +35,7 @@ class Home : AppCompatActivity() {
 
         fab.setOnClickListener {
 
-            startActivity(Intent(this@Home,NewOrder::class.java))
+            startActivity(Intent(this@Home, NewOrder::class.java))
         }
     }
 }
