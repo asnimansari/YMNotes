@@ -115,22 +115,20 @@
     </android.support.design.widget.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/serviceChargePayedLater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-      
-        android:text="Servie charge paid later"
-    />
+
+        android:text="Servie charge paid later" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/collectServiceChargeFromShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-      
-        android:text="Collect service charge from shop"
-   />
+
+        android:text="Collect service charge from shop" />
 
     <Button
         android:id="@+id/saveButton"
