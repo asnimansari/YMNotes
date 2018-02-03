@@ -1,8 +1,9 @@
-package com.yesmeal.yesmealnotes
+package com.yesmeal.yesmealnotes.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.yesmeal.yesmealnotes.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class Home : AppCompatActivity() {
