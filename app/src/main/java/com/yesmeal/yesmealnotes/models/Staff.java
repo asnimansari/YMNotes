@@ -11,9 +11,10 @@ public class Staff {
         this.staffEmail = staffEmail;
     }
 
-    public String  staffName;
-    public String  staffMobile;
-    public String  staffEmail;
+    public String staffName;
+    public String staffMobile;
+    public String staffEmail;
+    public int  staffID;
 
     public Staff() {
     }

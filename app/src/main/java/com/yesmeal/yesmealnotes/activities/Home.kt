@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.yesmeal.yesmealnotes.fragments.navigation.ManageStaffs
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.models.Zone
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
@@ -27,7 +28,15 @@ class Home : AppCompatActivity() {
             R.id.navigation_home -> {
                 var fragment  = RecentOrders()
                 var transaction  = fragmentManager.beginTransaction()
-                transaction.add(R.id.fg,fragment)
+                transaction.replace(R.id.fg,fragment)
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
+
+            }
+            R.id.navigation_notifications->{
+                var fragment  = ManageStaffs()
+                var transaction  = fragmentManager.beginTransaction()
+                transaction.replace(R.id.fg,fragment)
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
 

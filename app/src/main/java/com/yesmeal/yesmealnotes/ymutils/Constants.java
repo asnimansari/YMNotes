@@ -12,6 +12,7 @@ public class Constants {
 
 
     public static String TABLE_ZONES  = "zones";
+    public static String TABLE_STAFF_ZONES  = "staffs_zone";
     public static String TABLE_STAFF  =  "staffs";
     public static String TABLE_SHOPS = "shops";
     public static String TABLE_ORDERS = "orders";
@@ -24,7 +25,8 @@ public class Constants {
     //    STAFF TABLE
     public static String STAFF_NAME = "staffName";
     public static String STAFF_EMAIL = "staffEmail";
-    public static String STAFF_PHONE = "staffMobile";
+    public static String STAFF_MOBILE = "staffMobile";
+
     //shop table
     public static String SHOP_NAME  = "shopName";
 
@@ -39,6 +41,12 @@ public class Constants {
     public static String ORDER_TYPE  = "orderType";
     public static String ORDER_IS_ALLOTED  = "orderAlloted";
     public static String ORDER_ALLOTED_TO  = "orderAllotedTo";
+
+//    staffzone table
+    public static String STAFF_ZONE_ZONE_NAME  = "zoneName";
+    public static String STAFF_ZONE_STAFF_NAME  = "staffName";
+    public static String STAFF_ZONE_STAFF_MOBILE = "staffMobile";
+
 
 
 

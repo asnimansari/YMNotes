@@ -1,7 +1,6 @@
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import android.widget.Toast
 import com.yesmeal.yesmealnotes.models.Order
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
@@ -29,7 +28,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         db.createTable(TABLE_STAFF,true,
                 ID to INTEGER + PRIMARY_KEY +AUTOINCREMENT,
                 STAFF_NAME to TEXT + NOT_NULL,
-                STAFF_PHONE to TEXT + NOT_NULL,
+                STAFF_MOBILE to TEXT + NOT_NULL,
                 STAFF_EMAIL to TEXT + NOT_NULL
                 )
 
@@ -51,6 +50,14 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_IS_ALLOTED to INTEGER,
                 ORDER_ALLOTED_TO to TEXT
                 )
+        db.createTable(TABLE_STAFF_ZONES,true,
+                ID to INTEGER+ PRIMARY_KEY + AUTOINCREMENT,
+                STAFF_ZONE_ZONE_NAME to TEXT + NOT_NULL,
+                STAFF_ZONE_STAFF_NAME to TEXT + NOT_NULL,
+                STAFF_ZONE_STAFF_MOBILE to TEXT + NOT_NULL
+
+
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -118,7 +125,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         for(each in  staffList){
             var t  = db.insert(TABLE_STAFF,
                     STAFF_NAME  to each.staffName,
-                    STAFF_PHONE  to each.staffMobile,
+                    STAFF_MOBILE to each.staffMobile,
                     STAFF_EMAIL  to each.staffEmail
                     )
                     Log.e("STAFF INSTERD",t.toString())
@@ -126,8 +133,86 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         db.close()
 
     }
+    fun getAllZoneList():ArrayList<String>{
+        var db = this.readableDatabase
+        var cursor =  db.rawQuery("SELECT * FROM " + TABLE_ZONES,null);
+        var zoneList = ArrayList<String>()
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast){
+            zoneList.add(cursor.getString(cursor.getColumnIndex(ZONE_NAME)))
+            cursor.moveToNext()
+        }
+        cursor.close()
+        db.close()
+        return zoneList
 
+
+    }
+    fun getStaffsInZone(zone:String):ArrayList<String>{
+        var db = this.readableDatabase
+        var cursor =  db.rawQuery("SELECT * FROM " + TABLE_STAFF_ZONES + " WHERE " + STAFF_ZONE_ZONE_NAME + " IN ('"+zone+"')",null);
+        var staffList = ArrayList<String>()
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast){
+            var staff = Staff()
+            staff.staffName =  cursor.getString(cursor.getColumnIndex(STAFF_ZONE_STAFF_NAME))
+            staff.staffMobile = cursor.getString(cursor.getColumnIndex(STAFF_ZONE_STAFF_MOBILE))
+            staffList.add(staff.staffName)
+            Log.e("ALL STAFF"+zone,staff.staffName+staff.staffMobile)
+
+            cursor.moveToNext()
+        }
+        cursor.close()
+        db.close()
+        return staffList
+    }
+    fun getAllStaffs():List<Staff>{
+        var  db = this.readableDatabase
+        var staffList = ArrayList<Staff>()
+        var cursor =  db.rawQuery("SELECT * FROM " + TABLE_STAFF ,null);
+        cursor.moveToFirst()
+
+        while (!cursor.isAfterLast){
+            var staff = Staff()
+            staff.staffName  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+            staff.staffID  = cursor.getInt(cursor.getColumnIndex(ID))
+            staffList.add(staff)
+            cursor.moveToNext()
+        }
+        cursor.close()
+        db.close()
+        return staffList
+    }
+    fun getStaffDetailsForStaffWithID(staffID:Int):Staff{
+        var db1 = this.readableDatabase
+        var cursor =  db1.rawQuery("SELECT * FROM " + TABLE_STAFF + " WHERE "+ ID +" IN ("+staffID+")" ,null);
+        cursor.moveToFirst()
+        var staff = Staff()
+        staff.staffName  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+        staff.staffMobile = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+
+        cursor.close()
+
+        return staff
+
+    }
+    fun allotStaffsToZones(zone: String,staffList: ArrayList<Int>){
+        var db = this.writableDatabase
+
+        db.execSQL("DELETE FROM "+ TABLE_STAFF_ZONES);// +" WHERE " +  STAFF_ZONE_ZONE_NAME +"  IN  ('"+zone+"')")
+        for (eachStaffID in staffList){
+            var staff = this.getStaffDetailsForStaffWithID(eachStaffID)
+           var i=  db.insert(TABLE_STAFF_ZONES,
+                    STAFF_ZONE_ZONE_NAME to zone,
+                    STAFF_ZONE_STAFF_NAME to staff.staffName,
+                    STAFF_ZONE_STAFF_MOBILE to staff.staffMobile
+                    )
+            Log.e("S_Z_I",i.toString())
+        }
+        db.close()
+    }
 }
+
 
 // Access property for Context
 val Context.database: MySqlHelper
