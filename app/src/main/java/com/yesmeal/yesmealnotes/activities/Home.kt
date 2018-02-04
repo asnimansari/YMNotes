@@ -4,9 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.yesmeal.yesmealnotes.R
 import com.yesmeal.yesmealnotes.fragments.navigation.RecentOrders
 import kotlinx.android.synthetic.main.activity_home.*
+import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.yesmeal.yesmealnotes.models.Zone
+import com.yesmeal.yesmealnotes.ymutils.Constants.*
+import com.yesmeal.yesmealnotes.ymutils.CusUtils
+
 
 class Home : AppCompatActivity() {
 
@@ -37,4 +48,48 @@ class Home : AppCompatActivity() {
             startActivity(Intent(this@Home, NewOrder::class.java))
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.pull_zone_staff ->{
+                var zoneDb = CusUtils.getDatabase().reference.child(ZONES)
+                zoneDb.addValueEventListener(object :  ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                        Toast.makeText(this@Home,"Cancelled Zone Download",Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onDataChange(zoneSnaps: DataSnapshot?) {
+
+                        var zoneList = ArrayList<String>()
+                        for(each_zone in zoneSnaps!!.children){
+                            var zone = each_zone.getValue(Zone::class.java)
+                            Log.e("Zone",zone!!.zoneName)
+                            if (zone!!.zoneName.length!=0)
+                                zoneList.add(zone!!.zoneName)
+                        }
+                        if  (zoneList.size == 0){
+                            Toast.makeText(this@Home,"Error in Fetching Zone List",Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            var db = MySqlHelper.getInstance(this@Home)
+                            db.flushTable(TABLE_ZONES)
+                        }
+
+                    }
+                })
+            }
+            else -> {
+            }
+        }
+        return true
+    }
+
 }
