@@ -98,6 +98,7 @@ class Home : AppCompatActivity() {
                         for(each_staff in staffSnaps!!.children){
                             var staff = each_staff.getValue(Staff::class.java)
                             Log.e("Staffs",staff?.staffName)
+                            staffList.add(staff!!)
                         }
                         if  (staffList.size == 0){
                             Toast.makeText(this@Home,"Error in Fetching Staff List",Toast.LENGTH_SHORT).show()
