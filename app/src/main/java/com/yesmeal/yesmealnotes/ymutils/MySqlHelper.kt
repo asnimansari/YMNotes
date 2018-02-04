@@ -3,6 +3,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import android.widget.Toast
 import com.yesmeal.yesmealnotes.models.Order
+import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
 
@@ -94,11 +95,37 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         database.close()
         return orderList
     }
-    
+
     fun flushTable(tableName:String){
         var db = this.writableDatabase
         db.execSQL("DELETE FROM "+tableName)
         db.close()
+    }
+    fun insertZones(zonesList:ArrayList<String>){
+        var db = this.writableDatabase;
+        for (each in zonesList){
+            var t = db.insert(
+                    TABLE_ZONES,
+                    ZONE_NAME to each
+            )
+            Log.e("ZONE INSTERD",t.toString())
+
+        }
+        db.close()
+    }
+    fun insertStaffs(staffList:ArrayList<Staff>){
+        var db = this.writableDatabase
+        for(each in  staffList){
+            var t  = db.insert(TABLE_STAFF,
+                    STAFF_NAME  to each.staffName,
+                    STAFF_PHONE  to each.staffMobile,
+                    STAFF_EMAIL  to each.staffEmail
+                    )
+                    Log.e("ZONE INSTERD",t.toString())
+
+        }
+        db.close()
+
     }
 
 }

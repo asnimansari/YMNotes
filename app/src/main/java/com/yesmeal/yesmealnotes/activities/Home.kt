@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.models.Zone
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import com.yesmeal.yesmealnotes.ymutils.CusUtils
@@ -65,13 +66,11 @@ class Home : AppCompatActivity() {
                     override fun onCancelled(p0: DatabaseError?) {
                         Toast.makeText(this@Home,"Cancelled Zone Download",Toast.LENGTH_SHORT).show()
                     }
-
                     override fun onDataChange(zoneSnaps: DataSnapshot?) {
 
                         var zoneList = ArrayList<String>()
                         for(each_zone in zoneSnaps!!.children){
                             var zone = each_zone.getValue(Zone::class.java)
-                            Log.e("Zone",zone!!.zoneName)
                             if (zone!!.zoneName.length!=0)
                                 zoneList.add(zone!!.zoneName)
                         }
@@ -81,9 +80,37 @@ class Home : AppCompatActivity() {
                         else{
                             var db = MySqlHelper.getInstance(this@Home)
                             db.flushTable(TABLE_ZONES)
+                            db.insertZones(zoneList)
+                            zoneList.clear()
+                            Toast.makeText(this@Home,"Synced Zones",Toast.LENGTH_SHORT).show()
                         }
-
                     }
+                })
+
+                var staffDb = CusUtils.getDatabase().reference.child(STAFFS)
+                staffDb.addValueEventListener(object :ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                        Toast.makeText(this@Home,"Cancelled Staff Download",Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onDataChange(staffSnaps: DataSnapshot?) {
+                        var staffList = ArrayList<Staff>()
+                        for(each_staff in staffSnaps!!.children){
+                            var staff = each_staff.getValue(Staff::class.java)
+                            Log.e("Staffs",staff?.staffName)
+                        }
+                        if  (staffList.size == 0){
+                            Toast.makeText(this@Home,"Error in Fetching Staff List",Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            var db = MySqlHelper.getInstance(this@Home)
+                            db.flushTable(TABLE_STAFF)
+                            db.insertStaffs(staffList)
+                            staffList.clear()
+                            Toast.makeText(this@Home,"Synced Staffs",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                 })
             }
             else -> {
