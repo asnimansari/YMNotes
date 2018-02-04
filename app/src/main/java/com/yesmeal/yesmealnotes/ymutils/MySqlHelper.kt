@@ -121,8 +121,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                     STAFF_PHONE  to each.staffMobile,
                     STAFF_EMAIL  to each.staffEmail
                     )
-                    Log.e("ZONE INSTERD",t.toString())
-
+                    Log.e("STAFF INSTERD",t.toString())
         }
         db.close()
 
