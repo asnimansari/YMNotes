@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.yesmeal.yesmealnotes.R
+import com.yesmeal.yesmealnotes.fragments.RecentOrders
 import kotlinx.android.synthetic.main.activity_home.*
 
 class Home : AppCompatActivity() {
@@ -12,17 +13,15 @@ class Home : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                message.setText(R.string.title_home)
+                var fragment  = RecentOrders()
+                var transaction  = fragmentManager.beginTransaction()
+                transaction.add(R.id.fg,fragment)
+                transaction.commit()
                 return@OnNavigationItemSelectedListener true
+
             }
-            R.id.navigation_dashboard -> {
-                message.setText(R.string.title_dashboard)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifications -> {
-                message.setText(R.string.title_notifications)
-                return@OnNavigationItemSelectedListener true
-            }
+
+
         }
         false
     }

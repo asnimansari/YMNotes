@@ -47,13 +47,7 @@ class ShopOrder :Fragment(){
 
 
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser){
 
-            fragmentManager.beginTransaction().detach(this).attach(this).commit()
-        }
-    }
 
 
     private fun initializeViewsAndAutoComplete() {

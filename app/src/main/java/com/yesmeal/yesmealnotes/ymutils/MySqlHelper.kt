@@ -2,6 +2,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import android.widget.Toast
+import com.yesmeal.yesmealnotes.models.Order
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
 
@@ -53,7 +54,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
     }
     fun addNewOrder(shopName:String,orderLocation:String,orderLandmark:String?,orderMobile:String?,orderServiceCharge:String,orderServiceChargePaidLater:Int,orderServiceChargeCollectedFromShop:Int,orderType:String){
         var database  = this.writableDatabase
-        var t = database.insert(TABLE_ORDERS,
+        database.insert(TABLE_ORDERS,
                 ORDER_SHOP_NAME to shopName,
                 ORDER_LOCATION to  orderLocation,
                 ORDER_LANDMARK  to orderLandmark,
@@ -65,10 +66,32 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_UNIQUE_ID to "YM"+Math.round(Math.random()*1000000).toString(),
                 ORDER_TYPE to orderType
                 )
+        database.close()
 
-        Log.e("INSERTED",t.toString())
     }
 
+    fun selectRecentOrders():ArrayList<Order>{
+        var database = this.readableDatabase
+        var cursor =  database.rawQuery("SELECT * FROM " + TABLE_ORDERS,null);
+        cursor.moveToFirst()
+        var orderList = ArrayList<Order>()
+        while (!cursor.isAfterLast){
+            var order = Order()
+            order.shopName = cursor.getString(cursor.getColumnIndex(ORDER_SHOP_NAME))
+            order.orderLocation = cursor.getString(cursor.getColumnIndex(ORDER_LOCATION))
+            order.orderLandmark = cursor.getString(cursor.getColumnIndex(ORDER_LANDMARK))
+            order.orderMobile = cursor.getString(cursor.getColumnIndex(ORDER_MOBILE))
+            order.orderServiceCharge = cursor.getString(cursor.getColumnIndex(ORDER_SERVICE_CHARGE))
+            order.orderServiceChargePaidLater = cursor.getInt(cursor.getColumnIndex(ORDER_SERVICE_CHARGE_PAID_LATER))  ==1
+            order.orderServiceChargeCollectedFromShop = cursor.getInt(cursor.getColumnIndex(ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP))  ==1
+            order.uuid = cursor.getString(cursor.getColumnIndex(ORDER_UNIQUE_ID))
+            order.orderType = cursor.getString(cursor.getColumnIndex(ORDER_TYPE))
+            orderList.add(order)
+            cursor.moveToNext()
+        }
+        database.close()
+        return orderList
+    }
 }
 
 // Access property for Context
