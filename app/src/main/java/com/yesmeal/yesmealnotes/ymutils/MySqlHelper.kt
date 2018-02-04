@@ -94,6 +94,13 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         database.close()
         return orderList
     }
+    
+    fun flushTable(tableName:String){
+        var db = this.writableDatabase
+        db.execSQL("DELETE FROM "+tableName)
+        db.close()
+    }
+
 }
 
 // Access property for Context
