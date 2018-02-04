@@ -37,6 +37,8 @@ public class Constants {
     public static String ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP  = "orderServiceChargeCollectedFromShop";
     public static String ORDER_UNIQUE_ID  = "uuid";
     public static String ORDER_TYPE  = "orderType";
+    public static String ORDER_IS_ALLOTED  = "orderAlloted";
+    public static String ORDER_ALLOTED_TO  = "orderAllotedTo";
 
 
 

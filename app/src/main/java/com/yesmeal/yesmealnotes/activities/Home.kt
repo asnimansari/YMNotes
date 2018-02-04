@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.yesmeal.yesmealnotes.R
-import com.yesmeal.yesmealnotes.fragments.RecentOrders
+import com.yesmeal.yesmealnotes.fragments.navigation.RecentOrders
 import kotlinx.android.synthetic.main.activity_home.*
 
 class Home : AppCompatActivity() {

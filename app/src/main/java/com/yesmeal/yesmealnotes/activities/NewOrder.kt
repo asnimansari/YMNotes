@@ -11,8 +11,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.yesmeal.yesmealnotes.R
-import com.yesmeal.yesmealnotes.fragments.ShopOrder
-import com.yesmeal.yesmealnotes.fragments.YesMealOrder
+import com.yesmeal.yesmealnotes.fragments.order.ShopOrder
+import com.yesmeal.yesmealnotes.fragments.order.YesMealOrder
 
 import kotlinx.android.synthetic.main.new_order.*
 

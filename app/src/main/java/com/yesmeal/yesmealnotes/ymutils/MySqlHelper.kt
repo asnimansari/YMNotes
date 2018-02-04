@@ -46,7 +46,9 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_SERVICE_CHARGE_PAID_LATER to INTEGER,
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER,
                 ORDER_UNIQUE_ID to TEXT + UNIQUE,
-                ORDER_TYPE to TEXT
+                ORDER_TYPE to TEXT,
+                ORDER_IS_ALLOTED to INTEGER,
+                ORDER_ALLOTED_TO to TEXT
                 )
     }
 

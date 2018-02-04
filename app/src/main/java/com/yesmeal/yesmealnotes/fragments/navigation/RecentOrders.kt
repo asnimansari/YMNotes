@@ -1,4 +1,4 @@
-package com.yesmeal.yesmealnotes.fragments
+package com.yesmeal.yesmealnotes.fragments.navigation
 
 import android.app.Fragment
 import android.app.FragmentManager
