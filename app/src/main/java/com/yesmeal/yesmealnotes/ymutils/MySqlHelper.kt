@@ -2,6 +2,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.yesmeal.yesmealnotes.models.Order
+import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
@@ -199,7 +200,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
     fun allotStaffsToZones(zone: String,staffList: ArrayList<Int>){
         var db = this.writableDatabase
 
-        db.execSQL("DELETE FROM "+ TABLE_STAFF_ZONES);// +" WHERE " +  STAFF_ZONE_ZONE_NAME +"  IN  ('"+zone+"')")
+
+        db.execSQL("DELETE FROM "+ TABLE_STAFF_ZONES)
         for (eachStaffID in staffList){
             var staff = this.getStaffDetailsForStaffWithID(eachStaffID)
            var i=  db.insert(TABLE_STAFF_ZONES,
@@ -207,7 +209,6 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                     STAFF_ZONE_STAFF_NAME to staff.staffName,
                     STAFF_ZONE_STAFF_MOBILE to staff.staffMobile
                     )
-            Log.e("S_Z_I",i.toString())
         }
         db.close()
     }

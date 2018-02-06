@@ -15,7 +15,6 @@ public class Shop {
 
 
     public Shop(){
-//        id = UUID.randomUUID().toString();
 
     }
 

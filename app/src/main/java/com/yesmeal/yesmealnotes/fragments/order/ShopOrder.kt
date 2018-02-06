@@ -14,7 +14,7 @@ import com.yesmeal.yesmealnotes.R
 import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.ymutils.Constants
 import com.yesmeal.yesmealnotes.ymutils.CusUtils
-import kotlinx.android.synthetic.main.fragment_new_shop_order.*
+import kotlinx.android.synthetic.main.frag_new_shop_order.*
 
 import java.util.ArrayList
 
@@ -24,7 +24,7 @@ import java.util.ArrayList
 
 class ShopOrder :Fragment(){
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_new_shop_order,container,false)
+        return inflater?.inflate(R.layout.frag_new_shop_order,container,false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import com.yesmeal.yesmealnotes.R
 import com.yesmeal.yesmealnotes.adapters.ParentZoneAdapter
 import com.yesmeal.yesmealnotes.models.Zone
-import kotlinx.android.synthetic.main.fragment_staff_board_parent.*
+import kotlinx.android.synthetic.main.common_list_view.*
 
 /**
  * Created by asnimansari on 03/02/18.
@@ -23,12 +23,12 @@ class ManageStaffs:Fragment(){
         var zonelList = db.getAllZoneList()  as List<String>
 
         var arraAdapter = ParentZoneAdapter(context,android.R.layout.simple_spinner_item,zonelList)
-        staff_parent_list.adapter = arraAdapter
+        listView.adapter = arraAdapter
 
 
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater?.inflate(R.layout.fragment_staff_board_parent,container,false)!!
+        return inflater?.inflate(R.layout.common_list_view,container,false)!!
     }
 }

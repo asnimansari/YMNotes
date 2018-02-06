@@ -44,7 +44,7 @@ class ParentZoneAdapter(context: Context, @LayoutRes resource: Int, internal var
             staffAllocationAlertDialog.show()
 
             allot.setOnClickListener {
-                Toast.makeText(context,staffAllocationAdapter.selectedStaffID.size.toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,zone+ staffAllocationAdapter.selectedStaffID.size.toString(),Toast.LENGTH_SHORT).show()
                 MySqlHelper.getInstance(context).allotStaffsToZones(zone,staffAllocationAdapter.selectedStaffID)
                 staffAllocationAlertDialog.dismiss()
 
