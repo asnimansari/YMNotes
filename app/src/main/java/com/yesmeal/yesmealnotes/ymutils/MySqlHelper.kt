@@ -6,6 +6,7 @@ import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
+import java.util.HashMap
 
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
@@ -144,12 +145,25 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             cursor.moveToNext()
         }
         cursor.close()
-        db.close()
+//        db.close()
         return zoneList
 
 
     }
-    fun getStaffsInZone(zone:String):ArrayList<String>{
+
+
+    fun getZoneAndStaff():HashMap<String, List<String>>{
+        var zoneAndStaff : HashMap<String, List<String>>  = HashMap<String, List<String>>()
+        var allZones = getAllZoneList()
+        for (eachZone in allZones){
+            zoneAndStaff.put(eachZone,getStaffsInZone(eachZone))
+        }
+        return zoneAndStaff
+
+    }
+
+
+    fun getStaffsInZone(zone:String):List<String>{
         var db = this.readableDatabase
         var cursor =  db.rawQuery("SELECT * FROM " + TABLE_STAFF_ZONES + " WHERE " + STAFF_ZONE_ZONE_NAME + " IN ('"+zone+"')",null);
         var staffList = ArrayList<String>()
@@ -167,6 +181,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         db.close()
         return staffList
     }
+
+
     fun getAllStaffs():List<Staff>{
         var  db = this.readableDatabase
         var staffList = ArrayList<Staff>()
