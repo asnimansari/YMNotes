@@ -5,10 +5,9 @@
     <ExpandableListView
         android:layout_width="match_parent"
         android:id="@+id/expandableListView"
-        android:divider="#f00"
+        android:divider="#000"
         android:dividerHeight="1dp"
-        android:listSelector="#0f0"
-        android:childDivider="#0f0"
+        android:childDivider="#808080"
         android:layout_height="match_parent"></ExpandableListView>
 
 </android.support.constraint.ConstraintLayout>

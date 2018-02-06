@@ -57,7 +57,7 @@ class ParentZoneAdapter(context: Context, @LayoutRes resource: Int, internal var
         }
         zoneName?.text = zone
 
-        var staffList =  MySqlHelper.getInstance(context).getStaffsInZone(zone)
+        var staffList =  MySqlHelper.getInstance(context).getStaffsInZoneWithNumber(zone)
 //        var arrayAdapter = ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,staffList)
 //        staffsInZone?.adapter  = arrayAdapter
 

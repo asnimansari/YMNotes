@@ -32,7 +32,7 @@ class StaffExpandableListAdapter(private val context: Context, private val expan
         if (convertView == null) {
             val layoutInflater = this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = layoutInflater.inflate(R.layout.list_item, null)
+            convertView = layoutInflater.inflate(R.layout.expandable_list_item, null)
         }
         val expandedListTextView = convertView!!
                 .findViewById<View>(R.id.expandedListItem) as TextView
@@ -56,13 +56,14 @@ class StaffExpandableListAdapter(private val context: Context, private val expan
         return listPosition.toLong()
     }
 
+
     override fun getGroupView(listPosition: Int, isExpanded: Boolean,
                               convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val listTitle = getGroup(listPosition) as String
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = layoutInflater.inflate(R.layout.list_group, null)
+            convertView = layoutInflater.inflate(R.layout.expandable_list_group, null)
         }
         val listTitleTextView = convertView!!
                 .findViewById<View>(R.id.listTitle) as TextView

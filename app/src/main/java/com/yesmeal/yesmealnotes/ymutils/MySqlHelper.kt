@@ -1,8 +1,10 @@
+
+@file:JvmName("ABC")
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+
 import com.yesmeal.yesmealnotes.models.Order
-import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
@@ -156,14 +158,15 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         var zoneAndStaff : HashMap<String, List<String>>  = HashMap<String, List<String>>()
         var allZones = getAllZoneList()
         for (eachZone in allZones){
-            zoneAndStaff.put(eachZone,getStaffsInZone(eachZone))
+            zoneAndStaff.put(eachZone, getStaffsInZoneWithNumber(eachZone))
         }
         return zoneAndStaff
+
 
     }
 
 
-    fun getStaffsInZone(zone:String):List<String>{
+    fun getStaffsInZoneWithNumber(zone:String):List<String>{
         var db = this.readableDatabase
         var cursor =  db.rawQuery("SELECT * FROM " + TABLE_STAFF_ZONES + " WHERE " + STAFF_ZONE_ZONE_NAME + " IN ('"+zone+"')",null);
         var staffList = ArrayList<String>()
@@ -172,8 +175,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             var staff = Staff()
             staff.staffName =  cursor.getString(cursor.getColumnIndex(STAFF_ZONE_STAFF_NAME))
             staff.staffMobile = cursor.getString(cursor.getColumnIndex(STAFF_ZONE_STAFF_MOBILE))
-            staffList.add(staff.staffName)
-            Log.e("ALL STAFF"+zone,staff.staffName+staff.staffMobile)
+            staffList.add(staff.staffName +" ( "+ staff.staffMobile+" )")
+//            Log.e("ALL STAFF"+zone,staff.staffName + staff.staffMobile)
 
             cursor.moveToNext()
         }
@@ -217,7 +220,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         var db = this.writableDatabase
 
 
-        db.execSQL("DELETE FROM "+ TABLE_STAFF_ZONES)
+        db.execSQL("DELETE FROM "+ TABLE_STAFF_ZONES + " WHERE " + STAFF_ZONE_ZONE_NAME +"='"+ zone+"'")
         for (eachStaffID in staffList){
             var staff = this.getStaffDetailsForStaffWithID(eachStaffID)
            var i=  db.insert(TABLE_STAFF_ZONES,
