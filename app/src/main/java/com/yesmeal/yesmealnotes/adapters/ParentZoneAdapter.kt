@@ -32,7 +32,7 @@ class ParentZoneAdapter(context: Context, @LayoutRes resource: Int, internal var
         addStaffToZone?.setOnClickListener {
             Toast.makeText(context,zone + completeStaffList.size,Toast.LENGTH_SHORT).show()
             var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            var popupLayoutForSelectingStaffs = inflater.inflate(R.layout.alert_zone_staff_allocation,null)
+            var popupLayoutForSelectingStaffs = inflater.inflate(R.layout.alert_order_staff_allocation,null)
             var staffSelectionListLayout = popupLayoutForSelectingStaffs.findViewById<ListView>(R.id.staffListCheckBox)
             var allot = popupLayoutForSelectingStaffs.findViewById<Button>(R.id.allot)
             var dismiss = popupLayoutForSelectingStaffs.findViewById<Button>(R.id.dismiss)

@@ -70,8 +70,6 @@ class StaffAllocation : Fragment(){
 
                     fragmentManager.beginTransaction().detach(this@StaffAllocation).attach(this@StaffAllocation).commit()
 
-
-
                 }
                 dismiss.setOnClickListener {
                     staffAllocationAlertDialog.dismiss()

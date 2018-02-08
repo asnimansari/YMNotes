@@ -19,6 +19,8 @@ public class Order {
 
  public String orderStaff;
  public String orderStaffMobile;
+ public String orderRemarks;
+
 
 
  public Order() {

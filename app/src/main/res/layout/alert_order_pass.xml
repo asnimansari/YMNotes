@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/adaslkdfn"
@@ -20,8 +20,8 @@
             android:id="@+id/orderStaffName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords"
-            android:hint="Staff Name" />
+            android:hint="Staff Name"
+            android:inputType="textCapWords" />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -37,8 +37,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adaslkdfn">
 
-        <AutoCompleteTextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/orderStaffMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:enabled="false"
+            android:focusable="false"
+            android:hint="Staff Mobile"
+            android:longClickable="false" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/dfghjk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adaslkdfn">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/orderPassAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -50,33 +71,29 @@
 
     <Button
         android:id="@+id/dissmissStaff"
+        style="@style/RedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Dismiss"
-        style="@style/RedButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/allotStaff"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layouBadad" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/allotStaff"
+        style="@style/GreenButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:text="Allot"
-        style="@style/GreenButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/dissmissStaff"
-        app:layout_constraintTop_toBottomOf="@+id/layouBadad" />
+        app:layout_constraintStart_toEndOf="@+id/dissmissStaff" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -80,6 +80,9 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
                         R.id.change_allot->{
                             orderAllocationMenu(current_order)
                         }
+                        R.id.order_remarks->{
+                            orderRemarksMenu(current_order)
+                        }
 
                     }
                     return false
@@ -103,9 +106,40 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
     }
 
 
+    fun orderRemarksMenu(ord: Order){
+        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        var popupLayouteorSelectingStaffs = inflater.inflate(R.layout.alert_box_order_remarks,null)
+        var orderRemarks = popupLayouteorSelectingStaffs.findViewById<EditText>(R.id.orderRemarks)
+        var save = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.save)
+        var dismiss = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.dismiss)
+
+        orderRemarks.setText(ord.orderRemarks)
+
+
+
+        var alertDialog = AlertDialog.Builder(context)
+                .setView(popupLayouteorSelectingStaffs)
+                .create()
+        dismiss.setOnClickListener { alertDialog.dismiss() }
+        save.setOnClickListener {
+            if (orderRemarks.text.toString().trim().length==0){
+                Toast.makeText(context,"Please Add Order Notes",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                myDatabase.updateOrderRemarks(ord.id,orderRemarks.text.toString())
+                alertDialog.dismiss()
+                reloadThisFragment()
+
+            }
+        }
+        alertDialog.show()
+
+
+    }
+
     fun orderAllocationMenu(ord: Order){
         var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var popupLayouteorSelectingStaffs = inflater.inflate(R.layout.alert_zone_staff_allocation,null)
+        var popupLayouteorSelectingStaffs = inflater.inflate(R.layout.alert_order_staff_allocation,null)
         var orderStaffName = popupLayouteorSelectingStaffs.findViewById<AutoCompleteTextView>(R.id.orderStaffName)
         var orderStaffMobile = popupLayouteorSelectingStaffs.findViewById<EditText>(R.id.orderStaffMobile)
 
@@ -144,7 +178,7 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
             if(orderStaffName.text.length!=0 &&  orderStaffMobile.text.length!=0){
                 myDatabase.allotOrder(ord.id,orderStaffName.text.toString(),orderStaffMobile.text.toString())
                 alertDialog.dismiss()
-
+                reloadThisFragment()
 
             }
             else{

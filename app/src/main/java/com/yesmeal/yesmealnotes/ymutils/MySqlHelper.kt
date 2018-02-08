@@ -52,12 +52,12 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to INTEGER,
                 ORDER_UNIQUE_ID to TEXT + UNIQUE,
                 ORDER_TYPE to TEXT,
-                ORDER_IS_ALLOTED to INTEGER,
                 STAFF_NAME to TEXT ,
                 STAFF_MOBILE to TEXT,
-                STAFF_ALLOTED_TIME  to TEXT
+                STAFF_ALLOTED_TIME  to TEXT,
+                ORDER_REMARKS to TEXT
 
-                )
+        )
         db.createTable(TABLE_STAFF_ZONES,true,
                 ID to INTEGER+ PRIMARY_KEY + AUTOINCREMENT,
                 STAFF_ZONE_ZONE_NAME to TEXT + NOT_NULL,
@@ -107,6 +107,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             order.id = cursor.getInt(cursor.getColumnIndex(ID))
             order.orderStaff  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
             order.orderStaffMobile  = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+            order.orderRemarks  = cursor.getString(cursor.getColumnIndex(ORDER_REMARKS))
 
             orderList.add(order)
             cursor.moveToNext()
@@ -274,6 +275,14 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         cv.put(STAFF_NAME,staffName)
         cv.put(STAFF_MOBILE,staffMobile)
         cv.put(STAFF_ALLOTED_TIME, Date().toString())
+        db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
+        db.close()
+
+    }
+    fun updateOrderRemarks(orderID: Int,orderRemarks:String){
+        var db  = this.writableDatabase
+        var cv = ContentValues()
+        cv.put(ORDER_REMARKS,orderRemarks)
         db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
         db.close()
 
