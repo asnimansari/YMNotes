@@ -26,6 +26,7 @@ public class Constants {
     public static String STAFF_NAME = "staffName";
     public static String STAFF_EMAIL = "staffEmail";
     public static String STAFF_MOBILE = "staffMobile";
+    public static String STAFF_ALLOTED_TIME = "staffAllotedTime";
 
     //shop table
     public static String SHOP_NAME  = "shopName";

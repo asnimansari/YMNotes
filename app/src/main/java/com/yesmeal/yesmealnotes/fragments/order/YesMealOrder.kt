@@ -1,5 +1,6 @@
 package com.yesmeal.yesmealnotes.fragments.order
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.yesmeal.yesmealnotes.R
+import com.yesmeal.yesmealnotes.activities.Home
 import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.ymutils.Constants
 import com.yesmeal.yesmealnotes.ymutils.CusUtils
@@ -55,6 +57,8 @@ class YesMealOrder :Fragment(){
                 "C"
         )
 
+        startActivity(Intent(context, Home::class.java))
+        activity.finish()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -86,9 +90,9 @@ class YesMealOrder :Fragment(){
             }
         })
     }
+
     private fun validateAllInputFields():Boolean {
         return (shopName.text.toString().length!= 0) && (location.text.toString().length!=0)&& (serviceCharge.text.toString().length !=0) && (landmark.text.toString().length!=0) && (mobileNumber.text.toString().length !=0)
     }
-
 
 }

@@ -22,11 +22,13 @@ class RecentOrders: Fragment(){
         var database = MySqlHelper.getInstance(context)
         var recentOrdersList = database.selectRecentOrders()
         val fragmentManger: FragmentManager = fragmentManager
-
-
         var arrAdap = RecentOrderAdapter(context, recentOrdersList as List<Order>,fragmentManger,this)
-
         listView.adapter = arrAdap
+
+
+
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

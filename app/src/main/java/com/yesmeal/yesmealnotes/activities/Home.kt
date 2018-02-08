@@ -27,23 +27,14 @@ class Home : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                var fragment  = RecentOrders()
-                var transaction  = fragmentManager.beginTransaction()
-                transaction.replace(R.id.fg,fragment)
-                transaction.commit()
+                fragmentManager.beginTransaction().replace(R.id.fg,RecentOrders()).commit()
                 return@OnNavigationItemSelectedListener true
-
             }
             R.id.navigation_notifications->{
-                var fragment  = StaffAllocation()
-                var transaction  = fragmentManager.beginTransaction()
-                transaction.replace(R.id.fg,fragment)
-                transaction.commit()
+                fragmentManager.beginTransaction().replace(R.id.fg,StaffAllocation()).commit()
                 return@OnNavigationItemSelectedListener true
 
             }
-
-
         }
         false
     }
@@ -51,12 +42,11 @@ class Home : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
+        var transaction  = fragmentManager.beginTransaction().replace(R.id.fg,RecentOrders()).commit()
         fab.setOnClickListener {
 
-            startActivity(Intent(this@Home, NewOrder::class.java))
+            startActivity(Intent(this@Home, NewOrderActivity::class.java))
         }
     }
 

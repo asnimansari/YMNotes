@@ -11,10 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.yesmeal.yesmealnotes.R
-import com.yesmeal.yesmealnotes.R.id.expandableListView
-import com.yesmeal.yesmealnotes.adapters.RecentOrderAdapter
 import com.yesmeal.yesmealnotes.adapters.StaffAllocationAdapter
-import com.yesmeal.yesmealnotes.models.Order
 import com.yesmeal.yesmealnotes.ymutils.StaffExpandableListAdapter
 
 import java.util.ArrayList
@@ -54,7 +51,7 @@ class StaffAllocation : Fragment(){
 
             override fun onGroupClick(p0: ExpandableListView?, p1: View?, p2: Int, p3: Long): Boolean {
                 var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                var popupLayoutForSelectingStaffs = inflater.inflate(R.layout.alert_staff_with_checkbox,null)
+                var popupLayoutForSelectingStaffs = inflater.inflate(R.layout.alert_zone_staff_allocation,null)
                 var staffSelectionListLayout = popupLayoutForSelectingStaffs.findViewById<ListView>(R.id.staffListCheckBox)
                 var allot = popupLayoutForSelectingStaffs.findViewById<Button>(R.id.allot)
                 var dismiss = popupLayoutForSelectingStaffs.findViewById<Button>(R.id.dismiss)

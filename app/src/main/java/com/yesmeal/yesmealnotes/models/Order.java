@@ -15,6 +15,10 @@ public class Order {
  public  boolean orderServiceChargeCollectedFromShop;
  public  String uuid;
  public  String orderType;
+ public  int id;
+
+ public String orderStaff;
+ public String orderStaffMobile;
 
 
  public Order() {

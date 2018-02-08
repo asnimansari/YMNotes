@@ -1,5 +1,6 @@
 
 @file:JvmName("ABC")
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
@@ -8,7 +9,7 @@ import com.yesmeal.yesmealnotes.models.Order
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
 import org.jetbrains.anko.db.*
-import java.util.HashMap
+import java.util.*
 
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
@@ -52,7 +53,10 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_UNIQUE_ID to TEXT + UNIQUE,
                 ORDER_TYPE to TEXT,
                 ORDER_IS_ALLOTED to INTEGER,
-                ORDER_ALLOTED_TO to TEXT
+                STAFF_NAME to TEXT ,
+                STAFF_MOBILE to TEXT,
+                STAFF_ALLOTED_TIME  to TEXT
+
                 )
         db.createTable(TABLE_STAFF_ZONES,true,
                 ID to INTEGER+ PRIMARY_KEY + AUTOINCREMENT,
@@ -94,12 +98,16 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             order.shopName = cursor.getString(cursor.getColumnIndex(ORDER_SHOP_NAME))
             order.orderLocation = cursor.getString(cursor.getColumnIndex(ORDER_LOCATION))
             order.orderLandmark = cursor.getString(cursor.getColumnIndex(ORDER_LANDMARK))
-            order.orderMobile = cursor.getString(cursor.getColumnIndex(ORDER_MOBILE))
+//            order.orderMobile = cursor.getString(cursor.getColumnIndex(ORDER_MOBILE))
             order.orderServiceCharge = cursor.getString(cursor.getColumnIndex(ORDER_SERVICE_CHARGE))
             order.orderServiceChargePaidLater = cursor.getInt(cursor.getColumnIndex(ORDER_SERVICE_CHARGE_PAID_LATER))  ==1
             order.orderServiceChargeCollectedFromShop = cursor.getInt(cursor.getColumnIndex(ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP))  ==1
             order.uuid = cursor.getString(cursor.getColumnIndex(ORDER_UNIQUE_ID))
             order.orderType = cursor.getString(cursor.getColumnIndex(ORDER_TYPE))
+            order.id = cursor.getInt(cursor.getColumnIndex(ID))
+            order.orderStaff  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+            order.orderStaffMobile  = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+
             orderList.add(order)
             cursor.moveToNext()
         }
@@ -203,6 +211,25 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         db.close()
         return staffList
     }
+
+
+    fun getAllStaffNames():List<String>{
+        var  db = this.readableDatabase
+        var staffList = ArrayList<String>()
+        var cursor =  db.rawQuery("SELECT * FROM " + TABLE_STAFF ,null);
+        cursor.moveToFirst()
+
+        while (!cursor.isAfterLast){
+
+            var staffName  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+            staffList.add(staffName)
+            cursor.moveToNext()
+        }
+        cursor.close()
+        db.close()
+        return staffList
+    }
+
     fun getStaffDetailsForStaffWithID(staffID:Int):Staff{
         var db1 = this.readableDatabase
         var cursor =  db1.rawQuery("SELECT * FROM " + TABLE_STAFF + " WHERE "+ ID +" IN ("+staffID+")" ,null);
@@ -230,6 +257,26 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                     )
         }
         db.close()
+    }
+    fun getMobileNumberofStaffWithName(staffName: String):String{
+        var db1 = this.readableDatabase
+        var cursor =  db1.rawQuery("SELECT * FROM " + TABLE_STAFF + " WHERE "+ STAFF_NAME +" IN ('"+staffName+"')" ,null);
+        cursor.moveToFirst()
+        var staffMobile = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+        cursor.close()
+        db1.close()
+        return staffMobile
+
+    }
+    fun allotOrder(orderID:Int,staffName: String,staffMobile:String){
+        var db  = this.writableDatabase
+        var cv = ContentValues()
+        cv.put(STAFF_NAME,staffName)
+        cv.put(STAFF_MOBILE,staffMobile)
+        cv.put(STAFF_ALLOTED_TIME, Date().toString())
+        db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
+        db.close()
+
     }
 }
 

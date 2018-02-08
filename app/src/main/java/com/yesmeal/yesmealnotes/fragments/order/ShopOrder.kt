@@ -1,5 +1,6 @@
 package com.yesmeal.yesmealnotes.fragments.order
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.yesmeal.yesmealnotes.R
+import com.yesmeal.yesmealnotes.activities.Home
 import com.yesmeal.yesmealnotes.models.Shop
 import com.yesmeal.yesmealnotes.ymutils.Constants
 import com.yesmeal.yesmealnotes.ymutils.CusUtils
@@ -80,6 +82,9 @@ class ShopOrder :Fragment(){
                 if(collectServiceChargeFromShop.isChecked) 1  else 0,
                 "S"
                 )
+
+        startActivity(Intent(context, Home::class.java))
+        activity.finish()
 
     }
 
