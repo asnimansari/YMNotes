@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.app.Fragment
 import android.app.FragmentManager
 import android.content.Context
-import android.support.design.widget.TextInputEditText
 import android.text.Editable
 import android.text.TextWatcher
 
@@ -16,10 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.yesmeal.yesmealnotes.R
-import com.yesmeal.yesmealnotes.R.id.orderStaffName
 
 import com.yesmeal.yesmealnotes.models.Order
-import kotlinx.android.synthetic.main.frag_new_shop_order.*
 
 
 /**
@@ -55,26 +52,34 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
         val options = convertView.findViewById<View>(R.id.options) as ImageView
         val allotBtn = convertView.findViewById<View>(R.id.allotBtn) as Button
 
-        val  ord = getItem(position)
+        val  current_order = getItem(position)
 
-        shopName.text = ord.shopName
-        orderID.text = ord.uuid
-        location.text = ord.orderLocation
-        staffName.text = ord.orderStaff
-        mobile.text = ord.orderStaffMobile
-        serviceCharge.text = ord.orderServiceCharge
-        orderType.text = ord.orderType
+        shopName.text = current_order.shopName
+        orderID.text = current_order.uuid
+        location.text = current_order.orderLocation
+        staffName.text = current_order.orderStaff
+        mobile.text = current_order.orderStaffMobile
+        serviceCharge.text = current_order.orderServiceCharge
+        orderType.text = current_order.orderType
 
         allotBtn.text = if (order.orderStaff!=null && order.orderStaff.length!=0) "ALLOTED"  else "ALLOT"
 
 
 
+
         options.setOnClickListener {
             val popup = PopupMenu(context, options)
-            popup.inflate(R.menu.recent_order)
+
+            if (order.orderStaff!=null && order.orderStaff.length!=0) popup.inflate(R.menu.recent_order_alloted_menu) else popup.inflate(R.menu.recent_order_unalloted)
+
+
             popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
                 override fun onMenuItemClick(item: MenuItem): Boolean {
                     when (item.getItemId()) {
+
+                        R.id.change_allot->{
+                            orderAllocationMenu(current_order)
+                        }
 
                     }
                     return false
@@ -84,65 +89,12 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
             popup.show()
         }
 
+
 //       ALLOT CLICK
         allotBtn.setOnClickListener {
 
-            var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            var popupLayouteorSelectingStaffs = inflater.inflate(R.layout.alert_zone_staff_allocation,null)
-            var orderStaffName = popupLayouteorSelectingStaffs.findViewById<AutoCompleteTextView>(R.id.orderStaffName)
-            var orderStaffMobile = popupLayouteorSelectingStaffs.findViewById<EditText>(R.id.orderStaffMobile)
+            orderAllocationMenu(current_order)
 
-            var allotStaff = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.allotStaff)
-            var dismissStaff = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.dissmissStaff)
-
-            var staffNames = ArrayAdapter(context,android.R.layout.simple_list_item_1,allStaffNames)
-            orderStaffName.setAdapter(staffNames)
-
-            orderStaffName.setOnItemClickListener(object :AdapterView.OnItemClickListener{
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    Toast.makeText(context,getMobileNumberofStaffWithName(orderStaffName.text.toString().trim()),Toast.LENGTH_SHORT).show()
-                    orderStaffMobile.setText(getMobileNumberofStaffWithName(orderStaffName.text.toString().trim()))
-                }
-
-            })
-
-            var alertDialog = AlertDialog.Builder(context)
-                    .setView(popupLayouteorSelectingStaffs)
-                    .create()
-            orderStaffName.addTextChangedListener(object:TextWatcher{
-                override fun afterTextChanged(p0: Editable?) {
-                    orderStaffMobile.setText("")
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                }
-            })
-
-            allotStaff.setOnClickListener({
-                if(orderStaffName.text.length!=0 &&  orderStaffMobile.text.length!=0){
-                    myDatabase.allotOrder(ord.id,orderStaffName.text.toString(),orderStaffMobile.text.toString())
-                    alertDialog.dismiss()
-
-
-                }
-                else{
-                    Toast.makeText(context,"Error In Staff Allocation",Toast.LENGTH_SHORT).show()
-
-                }
-            })
-            dismissStaff.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-
-
-
-            alertDialog.show()
 
         }
         if (order.orderStaff!=null && order.orderStaff.length!=0) allotBtn.setOnClickListener(null)
@@ -150,6 +102,66 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
         return convertView
     }
 
+
+    fun orderAllocationMenu(ord: Order){
+        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        var popupLayouteorSelectingStaffs = inflater.inflate(R.layout.alert_zone_staff_allocation,null)
+        var orderStaffName = popupLayouteorSelectingStaffs.findViewById<AutoCompleteTextView>(R.id.orderStaffName)
+        var orderStaffMobile = popupLayouteorSelectingStaffs.findViewById<EditText>(R.id.orderStaffMobile)
+
+        var allotStaff = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.allotStaff)
+        var dismissStaff = popupLayouteorSelectingStaffs.findViewById<Button>(R.id.dissmissStaff)
+
+        var staffNames = ArrayAdapter(context,android.R.layout.simple_list_item_1,allStaffNames)
+        orderStaffName.setAdapter(staffNames)
+
+        orderStaffName.setOnItemClickListener(object :AdapterView.OnItemClickListener{
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Toast.makeText(context,getMobileNumberofStaffWithName(orderStaffName.text.toString().trim()),Toast.LENGTH_SHORT).show()
+                orderStaffMobile.setText(getMobileNumberofStaffWithName(orderStaffName.text.toString().trim()))
+            }
+
+        })
+
+        var alertDialog = AlertDialog.Builder(context)
+                .setView(popupLayouteorSelectingStaffs)
+                .create()
+        orderStaffName.addTextChangedListener(object:TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                orderStaffMobile.setText("")
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+
+        allotStaff.setOnClickListener({
+            if(orderStaffName.text.length!=0 &&  orderStaffMobile.text.length!=0){
+                myDatabase.allotOrder(ord.id,orderStaffName.text.toString(),orderStaffMobile.text.toString())
+                alertDialog.dismiss()
+
+
+            }
+            else{
+                Toast.makeText(context,"Error In Staff Allocation",Toast.LENGTH_SHORT).show()
+
+            }
+        })
+        dismissStaff.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+
+
+
+        alertDialog.show()
+
+    }
 
 
     override fun getCount(): Int {
