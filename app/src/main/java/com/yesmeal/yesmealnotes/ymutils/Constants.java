@@ -49,6 +49,9 @@ public class Constants {
     public static String STAFF_ZONE_STAFF_NAME  = "staffName";
     public static String STAFF_ZONE_STAFF_MOBILE = "staffMobile";
 
+    public static String RUPEES = "₹ ";
+
+
 
 
 

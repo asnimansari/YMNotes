@@ -28,7 +28,6 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
     val allStaffNames = myDatabase.getAllStaffNames()
     var fragm: Fragment?=null
     var fragManager: FragmentManager? = null
-    val RUPEES = "₹ "
     init {
         fragManager = fragmentManager
         fragm = fg
