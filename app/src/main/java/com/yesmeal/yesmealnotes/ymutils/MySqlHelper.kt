@@ -74,7 +74,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
     }
-    fun addNewOrder(shopName:String,
+    fun createOrder(shopName:String,
                     orderLocation:String,
                     orderLandmark:String?,
                     orderMobile:String?,

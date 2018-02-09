@@ -48,7 +48,7 @@ class YesMealOrder :Fragment(){
 
     private fun saveShopToDB() {
         var database  = MySqlHelper.getInstance(context)
-        database.addNewOrder(shopName.text.toString(),
+        database.createOrder(shopName.text.toString(),
                 location.text.toString(),
                 landmark.text.toString(),mobileNumber.text.toString(),
                 serviceCharge.text.toString(),
