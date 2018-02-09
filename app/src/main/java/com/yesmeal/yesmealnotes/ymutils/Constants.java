@@ -41,8 +41,16 @@ public class Constants {
     public static String ORDER_UNIQUE_ID  = "uuid";
     public static String ORDER_TYPE  = "orderType";
     public static String ORDER_REMARKS  = "remarks";
+    public static String ORDER_STATUS  = "orderStatus";
+    public static String ORDER_PASSED_AT  = "orderPassedAt";
+
+    public static String ORDER_PASSED = "PASSED";
+    public static String ORDER_CANCELLED = "CANCELLED";
+    public static String ORDER_ALLOTED = "ALLOTED";
 
 
+    public static String PREV_ALLOTED_STAFF_NAME = "prevStaffName";
+    public static String PREV_ALLOTED_STAFF_MOBILE = "prevStaffMobile";
 
 //    staffzone table
     public static String STAFF_ZONE_ZONE_NAME  = "zoneName";

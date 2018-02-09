@@ -55,7 +55,11 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 STAFF_NAME to TEXT ,
                 STAFF_MOBILE to TEXT,
                 STAFF_ALLOTED_TIME  to TEXT,
-                ORDER_REMARKS to TEXT
+                ORDER_REMARKS to TEXT,
+                PREV_ALLOTED_STAFF_NAME to TEXT,
+                PREV_ALLOTED_STAFF_MOBILE to TEXT,
+                ORDER_PASSED_AT to TEXT,
+                ORDER_STATUS to TEXT
 
         )
         db.createTable(TABLE_STAFF_ZONES,true,
@@ -70,7 +74,17 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
     }
-    fun addNewOrder(shopName:String,orderLocation:String,orderLandmark:String?,orderMobile:String?,orderServiceCharge:String,orderServiceChargePaidLater:Int,orderServiceChargeCollectedFromShop:Int,orderType:String){
+    fun addNewOrder(shopName:String,
+                    orderLocation:String,
+                    orderLandmark:String?,
+                    orderMobile:String?,
+                    orderServiceCharge:String,
+                    orderServiceChargePaidLater:Int,
+
+
+                    orderServiceChargeCollectedFromShop:Int,
+
+                    orderType:String){
         var database  = this.writableDatabase
         database.insert(TABLE_ORDERS,
                 ORDER_SHOP_NAME to shopName,
@@ -108,6 +122,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             order.orderStaff  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
             order.orderStaffMobile  = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
             order.orderRemarks  = cursor.getString(cursor.getColumnIndex(ORDER_REMARKS))
+            order.orderStatus  = cursor.getString(cursor.getColumnIndex(ORDER_STATUS))
 
             orderList.add(order)
             cursor.moveToNext()
@@ -269,16 +284,34 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         return staffMobile
 
     }
-    fun allotOrder(orderID:Int,staffName: String,staffMobile:String){
+    fun allotOrder(orderID:Int,staffName: String,staffMobile:String,prevStaff:String?,prevStaffMobile:String?){
         var db  = this.writableDatabase
         var cv = ContentValues()
         cv.put(STAFF_NAME,staffName)
         cv.put(STAFF_MOBILE,staffMobile)
         cv.put(STAFF_ALLOTED_TIME, Date().toString())
+        cv.put(ORDER_STATUS, ORDER_ALLOTED)
+        cv.put(PREV_ALLOTED_STAFF_NAME, prevStaff)
+        cv.put(PREV_ALLOTED_STAFF_MOBILE, prevStaffMobile)
         db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
         db.close()
-
     }
+
+    fun passOrder(orderID:Int,staffName: String,staffMobile:String,prevStaff:String?,prevStaffMobile:String?,passedAt:String?){
+        var db  = this.writableDatabase
+        var cv = ContentValues()
+        cv.put(STAFF_NAME,staffName)
+        cv.put(STAFF_MOBILE,staffMobile)
+        cv.put(STAFF_ALLOTED_TIME, Date().toString())
+        cv.put(ORDER_STATUS, ORDER_PASSED)
+        cv.put(PREV_ALLOTED_STAFF_NAME, prevStaff)
+        cv.put(PREV_ALLOTED_STAFF_MOBILE, prevStaffMobile)
+
+        cv.put(ORDER_PASSED_AT, passedAt)
+        db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
+        db.close()
+    }
+
     fun updateOrderRemarks(orderID: Int,orderRemarks:String){
         var db  = this.writableDatabase
         var cv = ContentValues()
@@ -287,6 +320,14 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         db.close()
 
     }
+    fun cancelOrder(orderID: Int){
+        var db  = this.writableDatabase
+        var cv = ContentValues()
+        cv.put(ORDER_STATUS, ORDER_CANCELLED)
+        db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
+        db.close()
+    }
+
 }
 
 
