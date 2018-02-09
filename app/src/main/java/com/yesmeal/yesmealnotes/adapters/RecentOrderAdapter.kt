@@ -25,7 +25,7 @@ import com.yesmeal.yesmealnotes.models.Order
 
 class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fragmentManager: FragmentManager, fg:Fragment) : ArrayAdapter<Order>(context, R.layout.row_recent_orders, objects) {
     val myDatabase = MySqlHelper.getInstance(context)
-    val allStaffNames = myDatabase.getAllStaffNames()
+    var allStaffNames = myDatabase.getAllStaffNames()
     var fragm: Fragment?=null
     var fragManager: FragmentManager? = null
     init {
@@ -36,6 +36,7 @@ class RecentOrderAdapter(context: Context, internal var objects: List<Order>, fr
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val order = getItem(position)
+        allStaffNames = myDatabase.getAllStaffNames()
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.row_recent_orders, parent, false)
