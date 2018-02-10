@@ -1,5 +1,8 @@
 package com.yesmeal.yesmealnotes.ymutils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * Created by asnimansari on 03/02/18.
  */
@@ -43,10 +46,12 @@ public class Constants {
     public static String ORDER_REMARKS  = "remarks";
     public static String ORDER_STATUS  = "orderStatus";
     public static String ORDER_PASSED_AT  = "orderPassedAt";
+    public static String ORDER_SYNCED  = "orderSynced";
+    public static String ORDER_CREATED_DATE  = "orderCreatedDate";
 
-    public static String ORDER_PASSED = "PASSED";
-    public static String ORDER_CANCELLED = "CANCELLED";
-    public static String ORDER_ALLOTED = "ALLOTED";
+    public static String STATUS_PASSED = "PASSED";
+    public static String STATUS_CANCELLED = "CANCELLED";
+    public static String STATUS_ALLOTED = "ALLOTED";
 
 
     public static String PREV_ALLOTED_STAFF_NAME = "prevStaffName";
@@ -57,7 +62,13 @@ public class Constants {
     public static String STAFF_ZONE_STAFF_NAME  = "staffName";
     public static String STAFF_ZONE_STAFF_MOBILE = "staffMobile";
 
+
+    public static String NOTES_APP = "notesApp";
+
+
     public static String RUPEES = "₹ ";
+
+    public static DateFormat  dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
 
 
 

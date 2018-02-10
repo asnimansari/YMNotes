@@ -8,8 +8,10 @@ import android.util.Log
 import com.yesmeal.yesmealnotes.models.Order
 import com.yesmeal.yesmealnotes.models.Staff
 import com.yesmeal.yesmealnotes.ymutils.Constants.*
+import com.yesmeal.yesmealnotes.ymutils.CusUtils
 import org.jetbrains.anko.db.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
 
@@ -59,7 +61,11 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 PREV_ALLOTED_STAFF_NAME to TEXT,
                 PREV_ALLOTED_STAFF_MOBILE to TEXT,
                 ORDER_PASSED_AT to TEXT,
-                ORDER_STATUS to TEXT
+                ORDER_STATUS to TEXT,
+                ORDER_CREATED_DATE to TEXT,
+                ORDER_SYNCED to INTEGER
+
+
 
         )
         db.createTable(TABLE_STAFF_ZONES,true,
@@ -96,15 +102,17 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to orderServiceChargeCollectedFromShop,
                 ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP to ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP,
                 ORDER_UNIQUE_ID to "YM"+Math.round(Math.random()*1000000).toString(),
-                ORDER_TYPE to orderType
+                ORDER_TYPE to orderType,
+                ORDER_CREATED_DATE to dateFormat.format(Date()),
+                ORDER_SYNCED to false
                 )
         database.close()
 
     }
 
-    fun selectRecentOrders():ArrayList<Order>{
+    fun selectPreviousOrder():ArrayList<Order>{
         var database = this.readableDatabase
-        var cursor =  database.rawQuery("SELECT * FROM " + TABLE_ORDERS,null);
+        var cursor =  database.rawQuery("SELECT * FROM " + TABLE_ORDERS+"  WHERE "+ ORDER_SYNCED+" ='1'",null);
         cursor.moveToFirst()
         var orderList = ArrayList<Order>()
         while (!cursor.isAfterLast){
@@ -112,7 +120,35 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
             order.shopName = cursor.getString(cursor.getColumnIndex(ORDER_SHOP_NAME))
             order.orderLocation = cursor.getString(cursor.getColumnIndex(ORDER_LOCATION))
             order.orderLandmark = cursor.getString(cursor.getColumnIndex(ORDER_LANDMARK))
-//            order.orderMobile = cursor.getString(cursor.getColumnIndex(ORDER_MOBILE))
+
+            order.orderServiceCharge = cursor.getString(cursor.getColumnIndex(ORDER_SERVICE_CHARGE))
+            order.orderServiceChargePaidLater = cursor.getInt(cursor.getColumnIndex(ORDER_SERVICE_CHARGE_PAID_LATER))  ==1
+            order.orderServiceChargeCollectedFromShop = cursor.getInt(cursor.getColumnIndex(ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP))  ==1
+            order.uuid = cursor.getString(cursor.getColumnIndex(ORDER_UNIQUE_ID))
+            order.orderType = cursor.getString(cursor.getColumnIndex(ORDER_TYPE))
+            order.id = cursor.getInt(cursor.getColumnIndex(ID))
+            order.orderStaff  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+            order.orderStaffMobile  = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+            order.orderRemarks  = cursor.getString(cursor.getColumnIndex(ORDER_REMARKS))
+            order.orderStatus  = cursor.getString(cursor.getColumnIndex(ORDER_STATUS))
+
+            orderList.add(order)
+            cursor.moveToNext()
+        }
+        database.close()
+        return orderList
+    }
+    fun selectRecentOrders():ArrayList<Order>{
+        var database = this.readableDatabase
+        var cursor =  database.rawQuery("SELECT * FROM " + TABLE_ORDERS+"  WHERE "+ ORDER_SYNCED+" ='0'",null);
+        cursor.moveToFirst()
+        var orderList = ArrayList<Order>()
+        while (!cursor.isAfterLast){
+            var order = Order()
+            order.shopName = cursor.getString(cursor.getColumnIndex(ORDER_SHOP_NAME))
+            order.orderLocation = cursor.getString(cursor.getColumnIndex(ORDER_LOCATION))
+            order.orderLandmark = cursor.getString(cursor.getColumnIndex(ORDER_LANDMARK))
+
             order.orderServiceCharge = cursor.getString(cursor.getColumnIndex(ORDER_SERVICE_CHARGE))
             order.orderServiceChargePaidLater = cursor.getInt(cursor.getColumnIndex(ORDER_SERVICE_CHARGE_PAID_LATER))  ==1
             order.orderServiceChargeCollectedFromShop = cursor.getInt(cursor.getColumnIndex(ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP))  ==1
@@ -290,7 +326,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         cv.put(STAFF_NAME,staffName)
         cv.put(STAFF_MOBILE,staffMobile)
         cv.put(STAFF_ALLOTED_TIME, Date().toString())
-        cv.put(ORDER_STATUS, ORDER_ALLOTED)
+        cv.put(ORDER_STATUS, STATUS_ALLOTED)
         cv.put(PREV_ALLOTED_STAFF_NAME, prevStaff)
         cv.put(PREV_ALLOTED_STAFF_MOBILE, prevStaffMobile)
         db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
@@ -303,7 +339,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
         cv.put(STAFF_NAME,staffName)
         cv.put(STAFF_MOBILE,staffMobile)
         cv.put(STAFF_ALLOTED_TIME, Date().toString())
-        cv.put(ORDER_STATUS, ORDER_PASSED)
+        cv.put(ORDER_STATUS, STATUS_PASSED)
         cv.put(PREV_ALLOTED_STAFF_NAME, prevStaff)
         cv.put(PREV_ALLOTED_STAFF_MOBILE, prevStaffMobile)
 
@@ -323,9 +359,50 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "mydb") {
     fun cancelOrder(orderID: Int){
         var db  = this.writableDatabase
         var cv = ContentValues()
-        cv.put(ORDER_STATUS, ORDER_CANCELLED)
+        cv.put(ORDER_STATUS, STATUS_CANCELLED)
         db.update(TABLE_ORDERS,cv,ID+" = '"+orderID+"'",null)
         db.close()
+    }
+    fun changeOrderStatusToSynced(orderID: Int){
+        var db = this.writableDatabase
+        var cv = ContentValues()
+        cv.put(ORDER_SYNCED,1)
+        db.update(TABLE_ORDERS,cv, ID+" = '"+orderID+"'",null)
+    }
+    fun syncOrders(){
+        var db = this.writableDatabase
+        var cursor = db.rawQuery("SELECT *  FROM "+ TABLE_ORDERS +" WHERE "+ ORDER_SYNCED +" = 0",null)
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast){
+
+            var order = Order()
+            order.shopName = cursor.getString(cursor.getColumnIndex(ORDER_SHOP_NAME))
+            order.orderLocation = cursor.getString(cursor.getColumnIndex(ORDER_LOCATION))
+            order.orderLandmark = cursor.getString(cursor.getColumnIndex(ORDER_LANDMARK))
+
+            order.orderServiceCharge = cursor.getString(cursor.getColumnIndex(ORDER_SERVICE_CHARGE))
+            order.orderServiceChargePaidLater = cursor.getInt(cursor.getColumnIndex(ORDER_SERVICE_CHARGE_PAID_LATER))  ==1
+            order.orderServiceChargeCollectedFromShop = cursor.getInt(cursor.getColumnIndex(ORDER_COLLECT_SERVICE_CHARGE_FROM_SHOP))  ==1
+            order.uuid = cursor.getString(cursor.getColumnIndex(ORDER_UNIQUE_ID))
+            order.orderType = cursor.getString(cursor.getColumnIndex(ORDER_TYPE))
+            order.id = cursor.getInt(cursor.getColumnIndex(ID))
+            order.orderStaff  = cursor.getString(cursor.getColumnIndex(STAFF_NAME))
+            order.orderStaffMobile  = cursor.getString(cursor.getColumnIndex(STAFF_MOBILE))
+            order.orderRemarks  = cursor.getString(cursor.getColumnIndex(ORDER_REMARKS))
+            order.orderStatus  = cursor.getString(cursor.getColumnIndex(ORDER_STATUS))
+
+            CusUtils.getDatabase().reference.child(NOTES_APP).child(order.uuid).setValue(order)
+                    .addOnSuccessListener {
+                        if (CusUtils.getDatabase().reference.child(NOTES_APP).child(order.uuid).root != null)
+                        {
+                            changeOrderStatusToSynced(order.id)
+                        }
+
+                    }
+
+            cursor.moveToNext()
+        }
+
     }
 
 }

@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.yesmeal.yesmealnotes.fragments.navigation.PreviousOrders
 import com.yesmeal.yesmealnotes.fragments.navigation.StaffAllocation
 
 import com.yesmeal.yesmealnotes.models.Staff
@@ -34,6 +35,10 @@ class Home : AppCompatActivity() {
                 fragmentManager.beginTransaction().replace(R.id.fg,StaffAllocation()).commit()
                 return@OnNavigationItemSelectedListener true
 
+            }
+            R.id.navigation_dashboard->{
+                fragmentManager.beginTransaction().replace(R.id.fg,PreviousOrders()).commit()
+                return@OnNavigationItemSelectedListener true
             }
         }
         false
@@ -60,6 +65,12 @@ class Home : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
+            R.id.sync_recent_orders->{
+                MySqlHelper.getInstance(this@Home).syncOrders()
+                fragmentManager.beginTransaction().replace(R.id.fg,RecentOrders()).commit()
+
+
+            }
             R.id.pull_zone_staff ->{
                 var zoneDb = CusUtils.getDatabase().reference.child(ZONES)
                 zoneDb.addValueEventListener(object :  ValueEventListener{

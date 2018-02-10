@@ -5,5 +5,8 @@
     <item
         android:title="Pull Zones &amp; Staffs"
         android:id="@+id/pull_zone_staff"/>
+    <item
+        android:title="Sync Recent Orders"
+        android:id="@+id/sync_recent_orders"/>
 
 </menu>
