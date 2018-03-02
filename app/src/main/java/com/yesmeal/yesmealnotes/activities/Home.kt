@@ -51,7 +51,7 @@ class Home : AppCompatActivity() {
         var transaction  = fragmentManager.beginTransaction().replace(R.id.fg,RecentOrders()).commit()
         fab.setOnClickListener {
 
-            startActivity(Intent(this@Home, NewOrderActivity::class.java))
+            startActivity(Intent(this@Home, NewOrder::class.java))
         }
     }
 

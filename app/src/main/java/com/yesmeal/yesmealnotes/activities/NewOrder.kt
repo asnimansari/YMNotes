@@ -16,7 +16,7 @@ import com.yesmeal.yesmealnotes.fragments.order.YesMealOrder
 
 import kotlinx.android.synthetic.main.new_order.*
 
-class NewOrderActivity : AppCompatActivity() {
+class NewOrder : AppCompatActivity() {
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
